@@ -3,4 +3,12 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/primary_text"
+        android:textSize="20sp"
+        android:id="@+id/editor_main"
+        android:gravity="start"/>
+
 </LinearLayout>
