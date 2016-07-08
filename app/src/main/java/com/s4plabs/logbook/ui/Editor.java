@@ -1,7 +1,9 @@
 package com.s4plabs.logbook.ui;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import com.s4plabs.logbook.R;
 import com.s4plabs.logbook.db.DBContract;
 import com.s4plabs.logbook.db.DBHelper;
+import com.s4plabs.logbook.utils.DatePickerFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,6 +76,10 @@ public class Editor extends Activity {
             discardLog();
             return true;
         }if (id == R.id.action_search) {
+
+            DialogFragment newFragment = new DatePickerFragment();
+            newFragment.show(getFragmentManager(), "datePicker");
+
             return true;
         }if (id == R.id.action_read){
             return true;
@@ -85,7 +92,7 @@ public class Editor extends Activity {
 
         Cursor cursor = getLog();
 
-        if(cursor.getCount()!=0){
+        if(cursor != null){
 
             DBHelper dbHelper = new DBHelper(getApplicationContext());
             SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -102,10 +109,11 @@ public class Editor extends Activity {
             db.close();
             dbHelper.close();
 
-            editor_main.setText("");
+
 
             Toast.makeText(getApplicationContext(), "Discarded", Toast.LENGTH_SHORT).show();
         }
+        editor_main.setText("");
     }
 
     protected Cursor getLog(){
@@ -117,6 +125,25 @@ public class Editor extends Activity {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         String date = format.format(currentDate);
         date = date.substring(0, 2)+date.substring(3, 5)+date.substring(6, 10);
+        Log.v("getlogs date", date);
+
+        String query = "Select * from " + DBContract.DayLogs.TABLE_NAME +" where " + DBContract.DayLogs.COLUMN_NAME_ID + " = "+ date + " ; ";
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.getCount()!=0){
+            return cursor;
+        }
+        else{
+            return null;
+        }
+    }
+
+    public static Cursor searchLogs(String date, Context context){
+        DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        date = date.substring(0, 2)+date.substring(3, 5)+date.substring(6, 10);
+
+        Log.v("searchlogs date", date);
 
         String query = "Select * from " + DBContract.DayLogs.TABLE_NAME +" where " + DBContract.DayLogs.COLUMN_NAME_ID + " = "+ date + " ; ";
         Cursor cursor = db.rawQuery(query, null);
