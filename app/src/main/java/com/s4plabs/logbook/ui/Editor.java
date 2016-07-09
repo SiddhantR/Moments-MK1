@@ -32,12 +32,18 @@ public class Editor extends Activity {
     protected String log;
     EditText editor_main;
     protected int update_flag = 0;
+    TextView todayView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editor_main);
         editor_main = (EditText) findViewById(R.id.editor_main);
+        todayView = (TextView) findViewById(R.id.todayView);
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy");
+        todayView.setText("Today  "+ format.format(date));
+
         Cursor cursor = getLog();
         if(cursor != null){
             cursor.moveToFirst();
