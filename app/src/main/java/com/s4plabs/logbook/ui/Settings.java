@@ -2,6 +2,7 @@ package com.s4plabs.logbook.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ public class Settings extends Activity {
     ListView lv;
     final ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
     EditText passw,confirmpass;
-    CharSequence items[]={"1 week","2 weeks","3 weeks","Recent Month","All"};
+    CharSequence items[]={"1 week","2 weeks","3 weeks","Current Month","All"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class Settings extends Activity {
 
                 if(value=="Change Password")
                 {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this,R.style.MyDialogTheme);
 
                     // Get the layout inflater
                     final LayoutInflater inflater = Settings.this.getLayoutInflater();
@@ -73,13 +74,13 @@ public class Settings extends Activity {
                                 public void onClick(DialogInterface dialog, int id) {
                         String s=passw.getText().toString();
                                     String s1=confirmpass.getText().toString();
-
-                                    SharedPreferences prefs=getSharedPreferences("my prefs",MODE_PRIVATE);
+                                    SharedPreferences sharedPref;
+                                    sharedPref = getSharedPreferences("Joker", Context.MODE_PRIVATE);
                                     if(s.equals(s1))
                                     {
 
-                                        SharedPreferences.Editor editor=prefs.edit();
-                                        editor.putString("password",passw.getText().toString());
+                                        SharedPreferences.Editor editor=sharedPref.edit();
+                                        editor.putString("Password",passw.getText().toString());
                                         editor.commit();
                                         Toast.makeText(getApplicationContext(),"Password changed",Toast.LENGTH_SHORT).show();
                                     }
@@ -104,7 +105,7 @@ public class Settings extends Activity {
 
                else
                 {
-                    AlertDialog.Builder ab=new AlertDialog.Builder(Settings.this);
+                    AlertDialog.Builder ab=new AlertDialog.Builder(Settings.this,R.style.MyDialogTheme);
                     ab.setTitle("Choose an option").setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -126,7 +127,7 @@ public class Settings extends Activity {
 
 
                     AlertDialog alert=ab.create();
-                    alert.setTitle(Html.fromHtml("<font color='#5daf98'>Set the number of logs to be displayed</font>"));
+                    alert.setTitle(Html.fromHtml("<font color='#5daf98'>Set the number of logs to be displayed.\n Logs of: </font>"));
 
                     alert.show();
                 }

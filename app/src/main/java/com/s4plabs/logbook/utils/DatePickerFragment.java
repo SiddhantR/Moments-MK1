@@ -3,6 +3,7 @@ package com.s4plabs.logbook.utils;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.s4plabs.logbook.ui.Editor;
+import com.s4plabs.logbook.ui.SearchViewer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,7 +46,7 @@ public class DatePickerFragment extends DialogFragment
 
         try {
             //Below i have done month+1 because dont know why datepicker is returning value that is one month less.
-            date = format.parse(Integer.toString(day)+"-"+Integer.toString(month+1)+"-"+Integer.toString(year));
+            date = format.parse(Integer.toString(day) + "-" + Integer.toString(month + 1) + "-" + Integer.toString(year));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -53,14 +55,8 @@ public class DatePickerFragment extends DialogFragment
 
         //Pass this formatted Date to search function
 
-        Cursor cursor = Editor.searchLogs(formattedDate, getActivity().getApplicationContext());
-
-        if(cursor != null){
-            Log.v("sahil search result", "FOUND");
-        }
-        else{
-            Log.v("sahil search result", "MISS");
-        }
-
+        Intent intent = new Intent(getActivity().getApplicationContext(), SearchViewer.class);
+        intent.putExtra("formatted_date", formattedDate);
+        startActivity(intent);
     }
 }

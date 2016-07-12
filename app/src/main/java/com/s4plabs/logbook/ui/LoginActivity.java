@@ -48,7 +48,6 @@ public class LoginActivity extends Activity {
     }
 
     public void login() {
-        Log.d(TAG, "Login");
 
         if (!validate()) {
             onLoginFailed();

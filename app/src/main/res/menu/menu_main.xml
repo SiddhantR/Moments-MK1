@@ -10,8 +10,13 @@
     <item android:id="@+id/action_discard"
         android:title="Discard"
         android:showAsAction="always"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:icon="@drawable/discard"/>
+    <item android:id="@+id/action_speech"
+        android:title="Speech to Text"
+        android:showAsAction="always"
+        android:orderInCategory="1"
+        android:icon="@drawable/stt"/>
 
     <item android:id="@+id/action_search"
         android:title="Search"

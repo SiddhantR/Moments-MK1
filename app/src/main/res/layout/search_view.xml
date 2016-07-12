@@ -3,10 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="61dp"
-        android:id="@+id/todayView"
+        android:id="@+id/searchDateView"
         android:textColor="@color/title_text"
         android:textSize="25sp"
         android:clickable="false"
@@ -19,9 +20,9 @@
         android:layout_height="match_parent"
         android:textColor="@color/primary_text"
         android:textSize="20sp"
-        android:id="@+id/editor_main"
+        android:id="@+id/searchMain"
         android:gravity="start"
         android:layout_weight="1"
-        android:hint="Begin a new Log !"/>
+        android:editable="false"/>
 
 </LinearLayout>

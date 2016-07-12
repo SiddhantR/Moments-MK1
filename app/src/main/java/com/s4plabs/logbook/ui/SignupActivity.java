@@ -54,7 +54,6 @@ public class SignupActivity extends Activity {
     }
 
     public void signup() {
-        Log.d(TAG, "Signup");
 
         if (!validate()) {
             onSignupFailed();

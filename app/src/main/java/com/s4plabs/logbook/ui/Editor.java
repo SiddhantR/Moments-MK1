@@ -2,12 +2,15 @@ package com.s4plabs.logbook.ui;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.ExpandableListActivity;
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +25,10 @@ import com.s4plabs.logbook.utils.DatePickerFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by sahil on 06-Jul-16.
@@ -34,6 +39,7 @@ public class Editor extends Activity {
     EditText editor_main;
     protected int update_flag = 0;
     TextView todayView;
+    final int REQ_CODE_SPEECH_INPUT = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +97,47 @@ public class Editor extends Activity {
 
             return true;
         }if (id == R.id.action_read){
+            Intent intent = new Intent(getApplicationContext(), ExpandableListView.class);
+            startActivity(intent);
             return true;
         }
-
+        if (id == R.id.action_speech) {
+            promptSpeechInput();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
+
+    private void promptSpeechInput() {
+
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"speak now");
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    "speech_not_supported",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    editor_main.append(result.get(0) + " " );
+                }}
+            break;
+        }}
 
     protected void discardLog(){
 
@@ -134,7 +176,6 @@ public class Editor extends Activity {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         String date = format.format(currentDate);
         date = date.substring(0, 2)+date.substring(3, 5)+date.substring(6, 10);
-        Log.v("getlogs date", date);
 
         String query = "Select * from " + DBContract.DayLogs.TABLE_NAME +" where " + DBContract.DayLogs.COLUMN_NAME_ID + " = "+ date + " ; ";
         Cursor cursor = db.rawQuery(query, null);
@@ -151,8 +192,6 @@ public class Editor extends Activity {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         date = date.substring(0, 2)+date.substring(3, 5)+date.substring(6, 10);
-
-        Log.v("searchlogs date", date);
 
         String query = "Select * from " + DBContract.DayLogs.TABLE_NAME +" where " + DBContract.DayLogs.COLUMN_NAME_ID + " = "+ date + " ; ";
         Cursor cursor = db.rawQuery(query, null);
@@ -174,7 +213,6 @@ public class Editor extends Activity {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         String date = format.format(currentDate);
         date = date.substring(0, 2)+date.substring(3, 5)+date.substring(6, 10);
-        Log.v("Checking date", date);
         ContentValues values = new ContentValues();
         values.put(DBContract.DayLogs.COLUMN_NAME_ID, Integer.parseInt(date));
         values.put(DBContract.DayLogs.COLUMN_NAME_LOG, log);

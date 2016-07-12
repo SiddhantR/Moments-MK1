@@ -33,6 +33,12 @@
 
         <activity android:name=".ui.Settings"
             android:label="Settings"/>
+
+        <activity android:name=".ui.ExpandableListView"
+            android:label="My Logs"/>
+
+        <activity android:name=".ui.SearchViewer"
+            android:label="Search Results"/>
     </application>
 
 </manifest>
