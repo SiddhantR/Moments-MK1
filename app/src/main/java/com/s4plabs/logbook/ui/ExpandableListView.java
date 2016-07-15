@@ -15,6 +15,7 @@ import com.s4plabs.logbook.db.DBContract;
 import com.s4plabs.logbook.db.DBHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,6 +41,8 @@ public class ExpandableListView extends Activity {
 
     protected void formatLogs(Cursor cursor){
         if(cursor != null){
+            listDataHeader.clear();
+            listDataChild.clear();
             for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
                 int date = cursor.getInt(cursor.getColumnIndex(DBContract.DayLogs.COLUMN_NAME_ID));
                 String date1 = Integer.toString(date);
@@ -49,7 +52,9 @@ public class ExpandableListView extends Activity {
                 logList.add(log);
                 listDataHeader.add(formatted_date);
                 listDataChild.put(formatted_date, logList);
+
             }
+
         }
     }
 
@@ -62,7 +67,9 @@ public class ExpandableListView extends Activity {
 
         getAllLogs();
 
+
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+
 
         // setting list adapter
         expListView.setAdapter(listAdapter);

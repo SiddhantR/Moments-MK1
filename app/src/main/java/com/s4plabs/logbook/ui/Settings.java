@@ -24,7 +24,11 @@ public class Settings extends Activity {
     ListView lv;
     final ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
     EditText passw,confirmpass;
-    CharSequence items[]={"1 week","2 weeks","3 weeks","Current Month","All"};
+
+
+ExpandableListAdapter obj1;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +43,9 @@ public class Settings extends Activity {
         map1.put("subtext", "Set a new password here");
         data.add(map1);
 
-        final HashMap<String, String> map2 = new HashMap<String, String>();
-        map2.put("maintext", "Number of Logs");
-        map2.put("subtext", "Select the number of logs to be displayed");
+        final HashMap<String,String> map2=new HashMap<>();
+map2.put("maintext"," ");
+        map2.put("subtext"," ");
         data.add(map2);
 
         lv=(ListView)findViewById(R.id.listView);
@@ -103,35 +107,9 @@ public class Settings extends Activity {
                 }
 
 
-               else
-                {
-                    AlertDialog.Builder ab=new AlertDialog.Builder(Settings.this,R.style.MyDialogTheme);
-                    ab.setTitle("Choose an option").setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-                    ab.setPositiveButton("save", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-                    /* update list view*/
-                        }
-                    });
-                    ab.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-                            dialogInterface.cancel();
-                        }
-                    });
 
 
-                    AlertDialog alert=ab.create();
-                    alert.setTitle(Html.fromHtml("<font color='#5daf98'>Set the number of logs to be displayed.\n Logs of: </font>"));
+        }
+    });
 
-                    alert.show();
-                }
-            }
-        });
-    }
-}
+}}

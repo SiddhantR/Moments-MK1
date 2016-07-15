@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.s4plabs.logbook.R;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+        return this._listDataChild.get(this._listDataHeader.get(this.getGroupCount()-groupPosition-1))
                 .get(childPosititon);
     }
 
@@ -68,12 +69,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this._listDataHeader.get(groupPosition);
+
+        return this._listDataHeader.get(this.getGroupCount()-groupPosition-1);
     }
 
     @Override
     public int getGroupCount() {
+
+
+
+
         return this._listDataHeader.size();
+
+
     }
 
     @Override
