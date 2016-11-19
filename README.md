@@ -1,4 +1,4 @@
-# Diary-App
+# Moments-Mk1
 
 This android application is capable of serving as a suplement or substitute of a conventional personal diary with functionalities to record a day's account with viewing and searching functionalities integrated along with audio input and output facilities integrated natively. It follows a minimalistic design and maintains user's privacy with password protection.
 
